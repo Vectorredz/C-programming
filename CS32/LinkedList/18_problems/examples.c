@@ -5,7 +5,7 @@
 
 typedef struct node{
     int data;
-    Node *next;
+    struct node *next;
 } Node;
 
 Node *BuildOneTwoThree(){
@@ -212,6 +212,18 @@ void push(Node **head, Node *newNode){
         }
         current->next = newNode;
         newNode->next = NULL;
+    }
+}
+
+void pushHead(Node **head, Node *newNode){
+    Node *current = *head;
+    if (*head == NULL){
+        *head = newNode;
+        newNode->next = NULL;
+    }
+    else {
+        newNode->next = current;
+        *head = newNode;
     }
 }
 
@@ -428,9 +440,14 @@ int main(){
     Node *myNode = BuildOneTwoThree();
     Node *a = DeckA();
     Node *b = DeckB();
+    Node *new = (Node*)malloc(sizeof(Node));
+    new->data = 13;
+    new->next = NULL;
     displayList(myNode);
-    Reverse(&myNode);
+    pushHead(&myNode, new);
     displayList(myNode);
+    // Reverse(&myNode);
+    // displayList(myNode);
     // Node *ret = NULL;
     // displayList(a);
     // displayList(b);
