@@ -57,7 +57,7 @@ void display(Node *head){
 Node *deleteDuplicates(Node *head){
     Node dummy;
     dummy.next = head;
-    Node *current = head;
+    Node *current = &dummy;
     Node *nextNode = NULL;
 
 
