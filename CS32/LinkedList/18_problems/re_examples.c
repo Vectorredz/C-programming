@@ -7,7 +7,7 @@
 
 Node *BuildLL(){
     // int arr[] = {1,2,3,4,5};
-    int arr[] = {5,4,3,2,1};
+    int arr[] = {3,10,2,1,20};
     int len = sizeof(arr) / sizeof(arr[0]);
     Node *lists = (Node*)malloc(sizeof(Node));
 
@@ -562,8 +562,6 @@ void Reverse_3(Node **headref)
 //     reverseDisplay(head->next);
 //     printf("%d -> ", head->val);
 // }
-
-
 void Reversed(Node *curr, Node *prev, Node **headref)
 {
     if (!(curr))
@@ -584,6 +582,37 @@ void RecursiveReverse(Node **headref)
     Reversed(*headref, NULL, headref);
 }
 
+
+//counting problems
+
+void insert_end(Node **head, Node *val){
+    if (*head == NULL)
+    {
+        *head = val;
+    }
+    Node *current = *head;
+    while (current->next != NULL){
+        current = current->next;
+    }
+    current->next = val;
+    return;
+}
+
+
+Node *LongestIncreasingSubsequence(Node *head)
+{
+    Node *curr = head->next;
+    Node *prev = head;
+    Node *store = NULL;
+    Node *empty = (Node*)malloc(sizeof(Node));
+
+    insert_end(&empty, curr);
+    
+    return empty;
+
+    
+    
+}
     
 
 
@@ -592,11 +621,10 @@ int main(){
     Node *head = BuildLL();
     Node *A = BuildA();
     Node *B = BuildB();
-    display(A);
-    RecursiveReverse(&A);
-    display(A);
-    Free(A);
-    display(A);
+    display(head);
+    Node* ret = LongestIncreasingSubsequence(head);
+    display(ret);  
+
     
 
     
