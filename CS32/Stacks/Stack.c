@@ -19,6 +19,8 @@ int IsFull(stack *S)
 {
     return (S->top == n);
 }
+int IsEmpty(stack *S)
+
 
 
 

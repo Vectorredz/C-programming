@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "excitingness.h": "c",
+        "stdlib.h": "c",
+        "imbalances.h": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c",
+        "functional": "c",
+        "random": "c",
+        "deque": "c",
+        "vector": "c"
+    }
+}
