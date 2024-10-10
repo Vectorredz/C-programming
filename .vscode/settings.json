@@ -10,6 +10,12 @@
         "functional": "c",
         "random": "c",
         "deque": "c",
-        "vector": "c"
+        "vector": "c",
+        "algorithm": "c",
+        "optional": "c",
+        "system_error": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c"
     }
 }

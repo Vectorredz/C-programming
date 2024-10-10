@@ -3,67 +3,57 @@
 
 typedef int DequeElemtype;
 
-// create node
-
-typedef struct dequeNode
-{
+// Node structure for the deque
+typedef struct dequeNode {
     DequeElemtype data;
-    struct dequeNode *next;
-    struct dequeNode *prev;
-
+    struct dequeNode* next;
+    struct dequeNode* prev;
 } DequeNode;
 
-typedef struct deque
-{
-    DequeNode * front;
-    DequeNode  * rear;
+// Deque structure with front and rear pointers
+typedef struct deque {
+    DequeNode* front;
+    DequeNode* rear;
 } Deque;
 
-void InitDeque(Deque *D)
-{
+// Initialize the deque
+void InitDeque(Deque* D) {
     D->front = NULL;
     D->rear = NULL;
 }
 
-int isEmpty(Deque *D)
-{
+// Check if deque is empty
+int isEmpty(Deque* D) {
     return (D->front == NULL);
 }
 
-void ENQUEUE_FRONT(Deque *D, DequeElemtype x)
-{
-    DequeNode *newNode = (DequeNode*)malloc(sizeof(DequeNode));
-    if (newNode == NULL)
-    {
+// Enqueue at the front
+void ENQUEUE_FRONT(Deque* D, DequeElemtype x) {
+    DequeNode* newNode = (DequeNode*)malloc(sizeof(DequeNode));
+    if (newNode == NULL) {
         exit(1);
     }
-    
     newNode->data = x;
     newNode->next = D->front;
     newNode->prev = NULL;
-    if (isEmpty(D)){
+    if (isEmpty(D)) {
         D->rear = newNode;
-    }
-    else {
+    } else {
         D->front->prev = newNode;
     }
     D->front = newNode;
 }
 
-void ENQUEUE_REAR(Deque *D, DequeElemtype x)
-{
-    DequeNode *newNode = (DequeNode*)malloc(sizeof(DequeNode));
-    if (newNode == NULL)
-    {
+// Enqueue at the rear
+void ENQUEUE_REAR(Deque* D, DequeElemtype x) {
+    DequeNode* newNode = (DequeNode*)malloc(sizeof(DequeNode));
+    if (newNode == NULL) {
         exit(1);
     }
-    
     newNode->data = x;
     newNode->next = NULL;
     newNode->prev = D->rear;
-
-    if (isEmpty(D))
-    {
+    if (isEmpty(D)) {
         D->front = newNode;
     } else {
         D->rear->next = newNode;
@@ -71,72 +61,110 @@ void ENQUEUE_REAR(Deque *D, DequeElemtype x)
     D->rear = newNode;
 }
 
-void DEQUEUE_FRONT(Deque *D, DequeElemtype *x)
-{
-
-    if (D->front == D->rear){
+// Dequeue from the front
+void DEQUEUE_FRONT(Deque* D, DequeElemtype* x) {
+    if (isEmpty(D)) {
+        printf("Deque Underflow\n");
+        return;
+    }
+    DequeNode* temp = D->front;
+    *x = temp->data;
+    if (D->front == D->rear) {  // Only one element
         D->front = D->rear = NULL;
     } else {
-        *x = D->front->data;
         D->front = D->front->next;
         D->front->prev = NULL;
     }
+    free(temp);
 }
 
-void DEQUEUE_REAR(Deque *D, DequeElemtype *x)
-{
-    if (D->rear == D->front){
-       D->front = D->rear = NULL; 
+// Dequeue from the rear
+void DEQUEUE_REAR(Deque* D, DequeElemtype* x) {
+    if (isEmpty(D)) {
+        printf("Deque Underflow\n");
+        return;
     }
-    else
-    {
-        *x = D->rear->data;
+    DequeNode* temp = D->rear;
+    *x = temp->data;
+    if (D->front == D->rear) {  // Only one element
+        D->front = D->rear = NULL;
+    } else {
         D->rear = D->rear->prev;
         D->rear->next = NULL;
     }
+    free(temp);
 }
 
-void REVERSE(Deque *D)
-{
-    DequeNode *current = D->front;
-    DequeNode *temp = NULL;
-
-    while (current != NULL)
-    {
-        temp = current->next;
+// Reverse the deque
+void REVERSE(Deque* D) {
+    DequeNode* current = D->front;
+    DequeNode* temp = NULL;
+    
+    // Traverse the deque and swap prev and next pointers
+    while (current != NULL) {
+        temp = current->prev;
         current->prev = current->next;
         current->next = temp;
         current = current->prev;
     }
+
+    // Swap the front and rear pointers
     temp = D->front;
     D->front = D->rear;
     D->rear = temp;
 }
 
+// Display the deque from front to rear
+void Display(Deque* D) {
+    DequeNode* current = D->front;
+    if (isEmpty(D)) {
+        printf("Deque is empty\n");
+        return;
+    }
 
-void Display(Deque *D)
-{
-    DequeNode *current = D->front;
-    while(current)
-    {
+    printf("Deque elements: ");
+    while (current != NULL) {
         printf("%d -> ", current->data);
         current = current->next;
     }
-    
-
+    printf("NULL\n");
 }
 
-int main()
-{
+// Main function
+int main() {
     Deque Q;
     DequeElemtype x;
+
+    // Initialize deque
     InitDeque(&Q);
-    Display(&Q);
+
+    // Enqueue some elements
     ENQUEUE_REAR(&Q, 1);
     ENQUEUE_REAR(&Q, 2);
-    ENQUEUE_FRONT(&Q, 1);
-    REVERSE(&Q);
-    Display(&Q);
-    printf("\n%d", x);
+    ENQUEUE_FRONT(&Q, 0);
 
+    // Display the deque
+    printf("Deque before reversing:\n");
+    Display(&Q);
+
+    // Reverse the deque
+    REVERSE(&Q);
+    
+    // Display after reversing
+    printf("Deque after reversing:\n");
+    Display(&Q);
+
+    // Dequeue from front
+    DEQUEUE_FRONT(&Q, &x);
+    printf("Dequeued from front: %d\n", x);
+
+    // Dequeue from rear
+    DEQUEUE_REAR(&Q, &x);
+    printf("Dequeued from rear: %d\n", x);
+
+    // Final display of the deque
+    printf("Final Deque:\n");
+    Display(&Q);
+
+    return 0;
 }
