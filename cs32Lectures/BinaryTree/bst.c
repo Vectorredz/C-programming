@@ -11,7 +11,6 @@ struct binaryNode {
 
 // Auxiliary functions
 
-
 void display(binaryNode *root){
     if (root == NULL){
         return;
@@ -233,6 +232,7 @@ void delete(binaryNode *root, int value){
         return;
     }
     else {
+        /* 1 2 3*/
         if (root->left->data == value){
             
         }
@@ -255,7 +255,54 @@ void delete(binaryNode *root, int value){
 //         pathSum(root,)
 //     }
 // }
+// Helper function to find the minimum value node in a subtree
+struct TreeNode* findMin(struct TreeNode* node) {
+    while (node->left != NULL) {
+        node = node->left;
+    }
+    return node;
+}
 
+// Function to delete a node with the value 'val' from the binary search tree
+struct TreeNode* deleteNode(struct TreeNode* root, int val) {
+    if (root == NULL) return root;
+
+    // Searching for the node to delete
+    if (val < root->val) {
+        root->left = deleteNode(root->left, val);
+    } else if (val > root->val) {
+        root->right = deleteNode(root->right, val);
+    } else {
+        // Node alpha found, let's delete it based on the 3 cases
+        // Case 1: Node alpha has no left son (no left child)
+        if (root->left == NULL) {
+            struct TreeNode* temp = root->right;
+            free(root);
+            printf("B\n");
+
+            return temp;
+
+        }
+        // Case 2: Node alpha has no right son (no right child)
+        if (root->right == NULL) {
+            struct TreeNode* temp = root->left;
+            free(root);
+            printf("C\n");
+
+            return temp;
+        }
+
+        printf("A\n");
+
+        // Case 3: Node alpha has a right subtree
+        // a. The right son of node alpha has no left subtree
+        // b. The right son of node alpha has a left subtree
+        struct TreeNode* temp = findMin(root->right); // Find the inorder successor
+        root->val = temp->val; // Replace alpha's value with the inorder successor
+        root->right = deleteNode(root->right, temp->val); // Delete the inorder successor
+    }
+    return root;
+}
 
 int main(){
     binaryNode *head = build123();
